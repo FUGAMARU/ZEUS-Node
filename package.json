@@ -1,0 +1,12 @@
+{
+  "name": "zeus-node",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3",
+    "http": "^0.0.1-security",
+    "log4js": "^6.4.2",
+    "socket.io": "^4.4.1"
+  }
+}
