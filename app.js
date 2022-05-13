@@ -27,9 +27,32 @@ io.on("connection", (socket) => {
 	})
 
 	socket.on("register", (res) => {
-		if(res !== undefined) socket.join(res)
-		console.log(`${socket.id}がルーム ${res} に参加しました`)
+		if(res !== undefined){
+			socket.join(res)
+			console.log(`${socket.id}がルーム ${res} に参加しました`)
+		}
+	})
+
+	socket.on("sendMessage", (res) => {
+		console.log(`新規メッセージ => ${JSON.stringify(res)}`)
+		if(res.scope === "global"){
+			io.emit("receiveMessage", {
+				scope: "global",
+				userName: res.userName,
+				iconSrc: res.iconSrc,
+				datetime: `${new Date().getHours()}:${("00" + new Date().getMinutes()).slice(-2)}`,
+				message: res.message
+			})
+		}else if(res.scope === "class"){
+			io.in(res.classID).emit("receiveMessage", {
+				scope: "class",
+				userName: res.userName,
+				iconSrc: res.iconSrc,
+				datetime: `${new Date().getHours()}:${("00" + new Date().getMinutes()).slice(-2)}`,
+				message: res.message
+			})
+		}
 	})
 })
  
-server.listen(8080)
+server.listen(1028)
