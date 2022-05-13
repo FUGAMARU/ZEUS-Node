@@ -25,6 +25,11 @@ io.on("connection", (socket) => {
 	socket.on("disconnect", (reason) => {
 		logger.info(`Disconnected: ${socket.id} - ${reason}`)
 	})
+
+	socket.on("register", (res) => {
+		if(res !== undefined) socket.join(res)
+		console.log(`${socket.id}がルーム ${res} に参加しました`)
+	})
 })
  
 server.listen(8080)
