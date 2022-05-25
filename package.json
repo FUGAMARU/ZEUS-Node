@@ -4,8 +4,10 @@
   "main": "app.js",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "http": "^0.0.1-security",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "twitter": "^1.7.1"
   }
 }
