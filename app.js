@@ -31,10 +31,9 @@ const getTwitterTrends = () => {
 }
 
 getTwitterTrends()
-
 setInterval(() => {
 	getTwitterTrends()
-}, 900000)
+}, 60000)
 
 const app = require("express")()
 const server = require("http").createServer(app)
@@ -46,6 +45,12 @@ const io = require("socket.io")(server, {
 	}
 })
 let prevLog = "prevLog"
+
+app.get("/twitter-trends", (req, res) => {
+	res.header("Access-Control-Allow-Origin", "*")
+	res.header("Access-Control-Allow-Methods", "GET")
+	res.json({trends: trends, lastUpdate: lastUpdate})
+})
 
 const time = () => {
 	return `[${new Date().toLocaleString("ja-JP")}]`
@@ -63,9 +68,9 @@ io.on("connection", (socket) => {
 
 	socket.on("register", (res) => {
 		if(res !== undefined){
-			socket.join(res)
 			const str = `${time()} ${socket.id} joined room ${res}`
 			if(str !== prevLog){
+				socket.join(res)
 				console.log(str)
 				prevLog = str
 			}
@@ -91,9 +96,5 @@ io.on("connection", (socket) => {
 				message: res.message
 			})
 		}
-	})
-
-	socket.on("requestTrends", () => {
-		socket.emit("receiveTrends", {trends: trends, lastUpdate: lastUpdate})
 	})
 })
